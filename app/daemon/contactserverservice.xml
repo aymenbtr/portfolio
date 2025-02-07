@@ -1,0 +1,32 @@
+<service>
+	<id>contactserverservice.exe</id>
+	<name>ContactServerService</name>
+	<description>Contact form server service</description>
+	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<argument>--experimental-modules</argument>
+	<argument>C:\Users\InfoBulles\Desktop\html_css_cours\my-react-app\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>C:\Users\InfoBulles\Desktop\html_css_cours\my-react-app\my-portfolio\my-portfolio\app\server.mjs</argument>
+	<argument>--scriptoptions=</argument>
+	<argument>--log</argument>
+	<argument>ContactServerService wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<logmode>rotate</logmode>
+	<stoptimeout>30sec</stoptimeout>
+	<env name="PORT" value="3000"/>
+	<serviceaccount>
+		<domain>DESKTOP-K14PVMS</domain>
+		<user>LocalSystem</user>
+		<password></password>
+	</serviceaccount>
+	<workingdirectory>C:\Users\InfoBulles\Desktop\html_css_cours\my-react-app\my-portfolio\my-portfolio\app</workingdirectory>
+</service>
