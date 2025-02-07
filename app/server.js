@@ -4,8 +4,16 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// Update CORS configuration to be more permissive
+app.use(cors({
+    origin: '*', // Be careful with this in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json({
+    limit: '10mb' // Increase payload limit if needed
+}));
 
 const uri = "mongodb+srv://aymenbtr33:aymenisnumber01@cluster0.e5tdt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri);
@@ -21,12 +29,16 @@ async function connectDB() {
 
 connectDB();
 
+// On your server
 app.post('/api/contacts', async (req, res) => {
     try {
+        console.log('Received request:', req.body); // Log incoming request
+        
         const { full_name, email, subject, message } = req.body;
         
         // Validate required fields
         if (!full_name || !email || !subject || !message) {
+            console.log('Missing required fields:', { full_name, email, subject, message });
             return res.status(400).json({
                 status: 'error',
                 message: 'All fields are required'
@@ -41,10 +53,15 @@ app.post('/api/contacts', async (req, res) => {
             email,
             subject,
             message,
-            created_at: new Date()
+            created_at: new Date(),
+            user_agent: req.headers['user-agent'], // Log user agent
+            ip_address: req.ip // Log IP address
         };
 
+        console.log('Attempting to save contact:', contact);
+
         const result = await contacts.insertOne(contact);
+        console.log('Save result:', result);
 
         res.json({
             status: 'success',
@@ -52,28 +69,11 @@ app.post('/api/contacts', async (req, res) => {
             id: result.insertedId
         });
     } catch (error) {
-        console.error('Error saving contact:', error);
+        console.error('Server error:', error);
         res.status(500).json({
             status: 'error',
-            message: 'Failed to send message'
+            message: 'Failed to send message',
+            error: error.message
         });
     }
-});
-
-// Add the GET /api/contacts route
-app.get('/api/contacts', async (req, res) => {
-    try {
-        const database = client.db('user');
-        const contacts = database.collection('contact');
-        const allContacts = await contacts.find().sort({ created_at: -1 }).toArray();
-        res.json(allContacts);
-    } catch (error) {
-        console.error('Error fetching contacts:', error);
-        res.status(500).json({ error: 'Failed to fetch contacts' });
-    }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
 });
