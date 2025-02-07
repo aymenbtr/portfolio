@@ -1419,13 +1419,22 @@ document.getElementById('contact-form').addEventListener('submit', async functio
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
         
-        const response = await fetch('http://localhost:3000/api/contacts', {
+        // Use your actual server IP address or domain name instead of localhost
+        const API_URL = 'https://portfolio-nqge.vercel.app';
+        // or if deployed: const API_URL = 'https://your-domain.com/api/contacts';
+        
+        const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(formData)
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
         const result = await response.json();
         
@@ -1433,9 +1442,12 @@ document.getElementById('contact-form').addEventListener('submit', async functio
             statusDiv.innerHTML = '<p class="text-sm font-medium text-green-400">Message sent successfully!</p>';
             this.reset();
         } else {
-            throw new Error(result.message);
+            throw new Error(result.message || 'Failed to send message');
         }
-     } finally {
+    } catch (error) {
+        console.error('Error:', error);
+        statusDiv.innerHTML = `<p class="text-sm font-medium text-red-400">${error.message}</p>`;
+    } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Send Message';
     }
