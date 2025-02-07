@@ -16,7 +16,7 @@ export default function ContactPage() {
             const response = await fetch('http://localhost:3000/api/contacts');
             const data = await response.json();
             setContacts(data);
-        } catch (error) {
+        } catch {
             setError('Failed to load contacts');
         } finally {
             setLoading(false);
@@ -29,7 +29,7 @@ export default function ContactPage() {
                 method: 'DELETE',
             });
             setContacts(contacts.filter(contact => contact._id !== id));
-        } catch (error) {
+        } catch {
             setError('Failed to delete contact');
         }
     }
