@@ -90,7 +90,7 @@ export default function ContactPage() {
                 loading: false,
                 refreshing: false
             }));
-        } catch (_) { // Changed from catch(err)
+        } catch (_) {  // This is correct - using _ instead of err
             setState(prev => ({
                 ...prev,
                 error: 'Failed to fetch contacts',
@@ -99,7 +99,6 @@ export default function ContactPage() {
             }));
         }
     }, []);
-
     const deleteContact = useCallback(async (id) => {
         setState(prev => ({ ...prev, deletingId: id }));
         try {
