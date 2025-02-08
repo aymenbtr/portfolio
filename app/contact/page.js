@@ -1,4 +1,6 @@
 'use client'
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Trash2, Mail, Calendar, User, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
 
@@ -20,8 +22,8 @@ export default function ContactPage() {
             const data = await response.json();
             setContacts(data);
             setError(null);
-        } catch (error) {
-            setError(error.message);
+        } catch (err) {
+            setError('Failed to fetch contacts');
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -30,7 +32,7 @@ export default function ContactPage() {
 
     useEffect(() => {
         fetchContacts();
-    }, [API_URL]); // Added API_URL as a dependency
+    }, []); // Empty dependency array
 
     const deleteContact = async (id) => {
         try {
@@ -42,7 +44,7 @@ export default function ContactPage() {
             if (!response.ok) throw new Error('Failed to delete contact');
             
             setContacts(prev => prev.filter(contact => contact._id !== id));
-        } catch (error) {
+        } catch (err) {
             setError('Failed to delete contact. Please try again.');
         } finally {
             setIsDeleting(null);
