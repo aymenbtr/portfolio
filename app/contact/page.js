@@ -3,26 +3,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Trash2, Mail, Calendar, User, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
 
-// Define interface for contact type
-interface Contact {
-    _id: string;
-    full_name: string;
-    email: string;
-    subject: string;
-    message: string;
-    created_at: string;
-}
-
-interface ContactCardProps {
-    contact: Contact;
-    onDelete: (id: string) => Promise<void>;
-    isDeleting: boolean;
-}
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-nqge.vercel.app/contact';
 
-function ContactCard({ contact, onDelete, isDeleting }: ContactCardProps) {
-    const formatDate = useCallback((dateString: string) => {
+function ContactCard({ contact, onDelete, isDeleting }) {
+    const formatDate = useCallback((dateString) => {
         return new Date(dateString).toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -84,16 +68,8 @@ function ContactCard({ contact, onDelete, isDeleting }: ContactCardProps) {
     );
 }
 
-interface State {
-    contacts: Contact[];
-    loading: boolean;
-    error: string | null;
-    deletingId: string | null;
-    refreshing: boolean;
-}
-
 export default function ContactPage() {
-    const [state, setState] = useState<State>({
+    const [state, setState] = useState({
         contacts: [],
         loading: true,
         error: null,
@@ -105,9 +81,7 @@ export default function ContactPage() {
         setState(prev => ({ ...prev, refreshing: true }));
         try {
             const response = await fetch(`${API_URL}/api/contacts`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch contacts');
-            }
+            if (!response.ok) throw new Error('Failed to fetch contacts');
             const data = await response.json();
             setState(prev => ({
                 ...prev,
@@ -116,7 +90,7 @@ export default function ContactPage() {
                 loading: false,
                 refreshing: false
             }));
-        } catch (_) {
+        } catch (_) { // Changed from catch(err)
             setState(prev => ({
                 ...prev,
                 error: 'Failed to fetch contacts',
@@ -126,21 +100,19 @@ export default function ContactPage() {
         }
     }, []);
 
-    const deleteContact = useCallback(async (id: string) => {
+    const deleteContact = useCallback(async (id) => {
         setState(prev => ({ ...prev, deletingId: id }));
         try {
             const response = await fetch(`${API_URL}/api/contacts/${id}`, {
                 method: 'DELETE'
             });
-            if (!response.ok) {
-                throw new Error('Failed to delete contact');
-            }
+            if (!response.ok) throw new Error('Failed to delete contact');
             setState(prev => ({
                 ...prev,
                 contacts: prev.contacts.filter(contact => contact._id !== id),
                 deletingId: null
             }));
-        } catch (_) {
+        } catch (_) { // Changed from catch(err)
             setState(prev => ({
                 ...prev,
                 error: 'Failed to delete contact',
