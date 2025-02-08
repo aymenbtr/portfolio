@@ -20,8 +20,8 @@ export default function ContactPage() {
             const data = await response.json();
             setContacts(data);
             setError(null);
-        } catch (err) {
-            setError(err.message);
+        } catch (error) {
+            setError(error.message);
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -30,7 +30,7 @@ export default function ContactPage() {
 
     useEffect(() => {
         fetchContacts();
-    }, []);
+    }, [API_URL]); // Added API_URL as a dependency
 
     const deleteContact = async (id) => {
         try {
@@ -42,13 +42,14 @@ export default function ContactPage() {
             if (!response.ok) throw new Error('Failed to delete contact');
             
             setContacts(prev => prev.filter(contact => contact._id !== id));
-        } catch (err) {
+        } catch (error) {
             setError('Failed to delete contact. Please try again.');
         } finally {
             setIsDeleting(null);
         }
     };
 
+    // Rest of the component remains the same...
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleString('en-US', {
             year: 'numeric',
