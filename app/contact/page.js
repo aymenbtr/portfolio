@@ -77,11 +77,24 @@ export default function ContactPage() {
         refreshing: false
     });
 
+    const handleError = useCallback((error, customMessage) => {
+        console.error(customMessage, error);
+        setState(prev => ({
+            ...prev,
+            error: customMessage,
+            loading: false,
+            refreshing: false,
+            deletingId: null
+        }));
+    }, []);
+
     const fetchContacts = useCallback(async () => {
         setState(prev => ({ ...prev, refreshing: true }));
         try {
             const response = await fetch(`${API_URL}/api/contacts`);
-            if (!response.ok) throw new Error('Failed to fetch contacts');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             setState(prev => ({
                 ...prev,
@@ -90,35 +103,29 @@ export default function ContactPage() {
                 loading: false,
                 refreshing: false
             }));
-        } catch (_) {  // This is correct - using _ instead of err
-            setState(prev => ({
-                ...prev,
-                error: 'Failed to fetch contacts',
-                loading: false,
-                refreshing: false
-            }));
+        } catch (error) {
+            handleError(error, 'Failed to fetch contacts');
         }
-    }, []);
+    }, [handleError]);
+
     const deleteContact = useCallback(async (id) => {
         setState(prev => ({ ...prev, deletingId: id }));
         try {
             const response = await fetch(`${API_URL}/api/contacts/${id}`, {
                 method: 'DELETE'
             });
-            if (!response.ok) throw new Error('Failed to delete contact');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             setState(prev => ({
                 ...prev,
                 contacts: prev.contacts.filter(contact => contact._id !== id),
                 deletingId: null
             }));
-        } catch (_) { // Changed from catch(err)
-            setState(prev => ({
-                ...prev,
-                error: 'Failed to delete contact',
-                deletingId: null
-            }));
+        } catch (error) {
+            handleError(error, 'Failed to delete contact');
         }
-    }, []);
+    }, [handleError]);
 
     useEffect(() => {
         fetchContacts();
