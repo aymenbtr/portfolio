@@ -90,7 +90,7 @@ export default function ContactPage() {
                 loading: false,
                 refreshing: false
             }));
-        } catch {
+        } catch (error) {  // Changed from catch(err)
             setState(prev => ({
                 ...prev,
                 error: 'Failed to fetch contacts',
@@ -112,7 +112,7 @@ export default function ContactPage() {
                 contacts: prev.contacts.filter(contact => contact._id !== id),
                 deletingId: null
             }));
-        } catch {
+        } catch (error) {  // Changed from catch(err)
             setState(prev => ({
                 ...prev,
                 error: 'Failed to delete contact',
