@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aymen Boutaraa - Creative Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Existing animations */
+        .matrix-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation: gradientBG 20s ease infinite;
+            background: linear-gradient(
+                45deg,
+                rgba(65, 88, 208, 0.9) 0%,
+                rgba(200, 80, 192, 0.9) 25%,
+                rgba(255, 204, 112, 0.9) 50%,
+                rgba(80, 200, 120, 0.9) 75%,
+                rgba(65, 88, 208, 0.9) 100%
+            );
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #matrixCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+            mix-blend-mode: overlay;
+        }
+        body {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Ensure sections have proper background opacity */
+        section {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Add semi-transparent overlay to hero section */
+        header {
+            position: relative;
+            background: linear-gradient(rgba(59, 130, 246, 0.9), rgba(29, 78, 216, 0.9));
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(to right, #3B82F6, #8B5CF6);
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+
+        .skill-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.skill-card:hover::before {
+    animation: shine 1.5s ease-out;
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Tailwind Icon Container */
+.tailwind-icon-container {
+    position: relative;
+}
+
+.tailwind-icon-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tailwind-icon-container:hover::after {
+    opacity: 1;
+}
+
+        /* Projects Grid Enhancement */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        /* Typing Animation for Hero Section */
+        .typing-text {
+            border-right: 3px solid;
+            animation: typing 3.5s steps(40, end), blink .75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #3B82F6 }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(to right, #3B82F6, #8B5CF6);
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Theme Styles */
+        [data-theme="dark"] {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .bg-white {
+            background-color: #2d2d2d;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .nav-about {
+            color: #E44D26;
+            transition: all 0.3s ease;
+        }
+        .nav-about:hover {
+            text-shadow: 0 0 10px #E44D26, 0 0 20px #E44D26;
+        }
+        
+        .nav-skills {
+            color: #2496ED;
+            transition: all 0.3s ease;
+        }
+        .nav-skills:hover {
+            text-shadow: 0 0 10px #2496ED, 0 0 20px #2496ED;
+        }
+        
+        .nav-projects {
+            color: #61DAFB;
+            transition: all 0.3s ease;
+        }
+        .nav-projects:hover {
+            text-shadow: 0 0 10px #61DAFB, 0 0 20px #61DAFB;
+        }
+        
+        .nav-contact {
+            color: #68A063;
+            transition: all 0.3s ease;
+        }
+        .nav-contact:hover {
+            text-shadow: 0 0 10px #68A063, 0 0 20px #68A063;
+        }
+
+        /* Profile picture animations */
+        .profile-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0); }
+        }
+
+        .profile-wrapper:hover {
+            animation: morph 3s infinite;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 50%; }
+            50% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; }
+            100% { border-radius: 50%; }
+        }
+
+        /* Creative name styling */
+        .name-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 2rem;
+        background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(238,242,255,0.5) 100%);
+        margin: 2rem 0;
+    }
+
+/* Base letter styling */
+.letter {
+    font-size: 4rem;
+    font-weight: bold;
+    position: relative;
+    padding: 0.5rem;
+    margin: 0 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.letter::before,
+.letter::after {
+    font-size: 1rem;
+    font-weight: normal;
+    font-family: 'Fira Code', monospace;
+    opacity: 0;
+    transition: all 0.3s ease;
+    position: absolute;
+}
+
+.letter:hover {
+    transform: translateY(-5px);
+}
+
+.letter:hover::before,
+.letter:hover::after {
+    opacity: 1;
+}
+
+/* HTML - A */
+.html-letter {
+    color: #E44D26;
+    text-shadow: 2px 2px 8px rgba(228, 77, 38, 0.3);
+}
+
+.html-letter::before {
+    content: '<html>';
+    top: -1.5rem;
+    color: #E44D26;
+}
+
+.html-letter::after {
+    content: '</html>';
+    bottom: -1.5rem;
+    color: #E44D26;
+}
+
+/* Python - Y */
+.python-letter {
+    color: #3776AB;
+    text-shadow: 2px 2px 8px rgba(55, 118, 171, 0.3);
+}
+
+.python-letter::before {
+    content: 'def main():';
+    top: -1.5rem;
+    color: #3776AB;
+}
+
+.python-letter::after {
+    content: 'return True';
+    bottom: -1.5rem;
+    color: #3776AB;
+}
+
+/* MongoDB - M */
+.mongo-letter {
+    color: #4DB33D;
+    text-shadow: 2px 2px 8px rgba(77, 179, 61, 0.3);
+}
+
+.mongo-letter::before {
+    content: 'db.collection';
+    top: -1.5rem;
+    color: #4DB33D;
+}
+
+.mongo-letter::after {
+    content: '.find({})';
+    bottom: -1.5rem;
+    color: #4DB33D;
+}
+
+/* React - E */
+.react-letter {
+    color: #61DAFB;
+    text-shadow: 2px 2px 8px rgba(97, 218, 251, 0.3);
+}
+
+.react-letter::before {
+    content: '<Component';
+    top: -1.5rem;
+    color: #61DAFB;
+}
+
+.react-letter::after {
+    content: 'props />';
+    bottom: -1.5rem;
+    color: #61DAFB;
+}
+
+/* Node - N */
+.node-letter {
+    color: #68A063;
+    text-shadow: 2px 2px 8px rgba(104, 160, 99, 0.3);
+}
+
+.node-letter::before {
+    content: 'import {';
+    top: -1.5rem;
+    color: #68A063;
+}
+
+.node-letter::after {
+    content: '} from "node"';
+    bottom: -1.5rem;
+    color: #68A063;
+}
+
+/* TypeScript - B */
+.ts-letter {
+    color: #007ACC;
+    text-shadow: 2px 2px 8px rgba(0, 122, 204, 0.3);
+}
+
+.ts-letter::before {
+    content: 'interface';
+    top: -1.5rem;
+    color: #007ACC;
+}
+
+.ts-letter::after {
+    content: '<Type>';
+    bottom: -1.5rem;
+    color: #007ACC;
+}
+
+/* Next.js - O */
+.next-letter {
+    color: #000000;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.next-letter::before {
+    content: 'pages/';
+    top: -1.5rem;
+    color: #000000;
+}
+
+.next-letter::after {
+    content: '[id].tsx';
+    bottom: -1.5rem;
+    color: #000000;
+}
+
+/* Vue - U */
+.vue-letter {
+    color: #42B883;
+    text-shadow: 2px 2px 8px rgba(66, 184, 131, 0.3);
+}
+
+.vue-letter::before {
+    content: '<template>';
+    top: -1.5rem;
+    color: #42B883;
+}
+
+.vue-letter::after {
+    content: '</template>';
+    bottom: -1.5rem;
+    color: #42B883;
+}
+
+/* Angular - T */
+.angular-letter {
+    color: #DD0031;
+    text-shadow: 2px 2px 8px rgba(221, 0, 49, 0.3);
+}
+
+.angular-letter::before {
+    content: '@Component';
+    top: -1.5rem;
+    color: #DD0031;
+}
+
+.angular-letter::after {
+    content: '{{value}}';
+    bottom: -1.5rem;
+    color: #DD0031;
+}
+
+/* Redux - A */
+.redux-letter {
+    color: #764ABC;
+    text-shadow: 2px 2px 8px rgba(118, 74, 188, 0.3);
+}
+
+.redux-letter::before {
+    content: 'dispatch(';
+    top: -1.5rem;
+    color: #764ABC;
+}
+
+.redux-letter::after {
+    content: 'action)';
+    bottom: -1.5rem;
+    color: #764ABC;
+}
+
+/* GraphQL - R */
+.graphql-letter {
+    color: #E535AB;
+    text-shadow: 2px 2px 8px rgba(229, 53, 171, 0.3);
+}
+
+.graphql-letter::before {
+    content: 'query {';
+    top: -1.5rem;
+    color: #E535AB;
+}
+
+.graphql-letter::after {
+    content: 'field }';
+    bottom: -1.5rem;
+    color: #E535AB;
+}
+
+/* Final A's */
+.webpack-letter {
+    color: #8DD6F9;
+    text-shadow: 2px 2px 8px rgba(141, 214, 249, 0.3);
+}
+
+.webpack-letter::before {
+    content: 'webpack';
+    top: -1.5rem;
+    color: #8DD6F9;
+}
+
+.webpack-letter::after {
+    content: '.config';
+    bottom: -1.5rem;
+    color: #8DD6F9;
+}
+
+/* Add floating animation */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Add glow animation */
+@keyframes glow {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+/* Apply animations to letters */
+.letter {
+    animation: float 3s ease-in-out infinite;
+}
+
+.letter:nth-child(2n) {
+    animation-delay: 0.5s;
+}
+
+.letter:nth-child(3n) {
+    animation-delay: 1s;
+}
+
+/* Add container for better organization */
+.name-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.4) 100%);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+}
+
+/* Add separator between first and last name */
+.name-separator {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.2), transparent);
+    margin: 1rem 0;
+}
+
+        /* Code frame styling */
+        .code-frame-container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        perspective: 1000px;
+    }
+
+    .code-frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 25px;
+        background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+        padding: 6px;
+        box-shadow: 
+            0 0 40px rgba(97, 218, 251, 0.3),
+            0 0 20px rgba(97, 218, 251, 0.2);
+        transform-style: preserve-3d;
+        animation: frameFloat 6s ease-in-out infinite;
+    }
+
+    .code-frame::before {
+        content: '</>';
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #61dafb;
+        font-family: 'Fira Code', monospace;
+        font-size: 32px;
+        font-weight: bold;
+        text-shadow: 
+            0 0 15px rgba(97, 218, 251, 0.8),
+            0 0 30px rgba(97, 218, 251, 0.4);
+        animation: codeGlow 2s ease-in-out infinite;
+    }
+
+    .code-frame::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 25px;
+        border: 3px solid #61dafb;
+        opacity: 0.6;
+        animation: borderPulse 2s ease-in-out infinite;
+    }
+
+    .profile-pic-container {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .profile-pic {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    /* Enhanced hover effects */
+    .code-frame-container:hover .profile-pic {
+        transform: scale(1.08);
+    }
+
+    .code-frame-container:hover .code-frame::after {
+        opacity: 0.8;
+        box-shadow: 
+            0 0 30px rgba(97, 218, 251, 0.4),
+            inset 0 0 30px rgba(97, 218, 251, 0.4);
+    }
+
+    @keyframes frameFloat {
+        0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+        25% { transform: translateY(-15px) rotateX(2deg) rotateY(-2deg); }
+        75% { transform: translateY(15px) rotateX(-2deg) rotateY(2deg); }
+    }
+
+    @keyframes borderPulse {
+        0%, 100% { 
+            box-shadow: 
+                0 0 20px rgba(97, 218, 251, 0.3),
+                inset 0 0 20px rgba(97, 218, 251, 0.3);
+        }
+        50% { 
+            box-shadow: 
+                0 0 30px rgba(97, 218, 251, 0.5),
+                inset 0 0 30px rgba(97, 218, 251, 0.5);
+        }
+    }
+        .code-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(97, 218, 251, 0.1),
+                rgba(97, 218, 251, 0.05)
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .code-lines {
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(
+                    to bottom,
+                    transparent 0%,
+                    transparent 48%,
+                    rgba(97, 218, 251, 0.1) 50%,
+                    transparent 52%,
+                    transparent 100%
+                );
+            background-size: 100% 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .code-frame-container:hover .code-overlay,
+        .code-frame-container:hover .code-lines {
+            opacity: 1;
+        }
+
+        .code-frame-container:hover .profile-pic {
+            transform: scale(1.05);
+        }
+        @keyframes codeGlow {
+            0%, 100% { 
+                opacity: 0.8;
+                transform: translateX(-50%) scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+
+        /* Decorative code elements */
+          .code-decorator {
+            position: absolute;
+            font-family: 'Fira Code', monospace;
+            color: #61dafb;
+            font-size: 14px;
+            opacity: 0.6;
+            text-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
+            pointer-events: none;
+        }
+
+        .code-decorator.top-left {
+            top: -20px;
+            left: -20px;
+            transform: rotate(-45deg);
+        }
+
+        .code-decorator.top-right {
+            top: -20px;
+            right: -20px;
+            transform: rotate(45deg);
+        }
+
+        .code-decorator.bottom-left {
+            bottom: -20px;
+            left: -20px;
+            transform: rotate(-135deg);
+        }
+
+        .code-decorator.bottom-right {
+            bottom: -20px;
+            right: -20px;
+            transform: rotate(135deg);
+        }
+
+        @keyframes codePulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        /* Navigation glow effects */
+        .social-link {
+            position: relative;
+            display: inline-block;
+        }
+
+        .social-icon-wrapper {
+            transition: all 0.3s ease;
+        }
+
+        .social-tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .social-link:hover .social-tooltip {
+            opacity: 1;
+            bottom: -25px;
+        }
+
+        /* Glowing effect for social icons */
+        .social-icon-wrapper:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+/* LinkedIn specific hover effect */
+.linkedin-link:hover .social-icon-wrapper {
+    background: rgba(0, 119, 181, 0.3);
+}
+
+/* GitHub specific hover effect */
+.github-link:hover .social-icon-wrapper {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced contact icon animations */
+@keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .contact-icon-wrapper i {
+            transition: all 0.3s ease;
+        }
+
+        .contact-icon-wrapper:hover i {
+            animation: pulse 1s infinite;
+        }
+
+        /* New Instagram gradient */
+        .instagram-link .social-icon-wrapper {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            opacity: 0.8;
+        }
+
+        .instagram-link:hover .social-icon-wrapper {
+            opacity: 1;
+        }
+
+/* Enhanced contact item animations */
+.contact-item {
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+}
+
+.contact-icon-wrapper {
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover .contact-icon-wrapper {
+    transform: scale(1.1);
+}
+
+/* Animation keyframes for contact icons */
+@keyframes emailWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+@keyframes phoneRing {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+@keyframes locationBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes clockSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes shine {
+    0% {
+        opacity: 1;
+        transform: rotate(45deg) translateY(-100%);
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(45deg) translateY(100%);
+    }
+}
+
+/* Matrix Background Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Apply animations to icons */
+.animate-email {
+    animation: emailWiggle 2s ease-in-out infinite;
+}
+
+.animate-phone {
+    animation: phoneRing 2s ease-in-out infinite;
+}
+
+.animate-location {
+    animation: locationBounce 2s ease-in-out infinite;
+}
+
+.animate-clock {
+    animation: clockSpin 8s linear infinite;
+}
+    </style>
+</head>
+<body class="bg-transparent">
+    <!-- Matrix Background Container -->
+    <div class="matrix-background">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+<div class="scroll-progress"></div>
+    <button class="back-to-top invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+<!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-lg">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center py-4">
+                <a href="#" class="text-2xl font-bold">AB</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#about" class="nav-about font-medium">About</a>
+                    <a href="#skills" class="nav-skills font-medium">Skills</a>
+                    <a href="#projects" class="nav-projects font-medium">Projects</a>
+                    <a href="#contact" class="nav-contact font-medium">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#about" class="block px-3 py-2 text-gray-600 hover:bg-blue-500 hover:text-white rounded-md">About</a>
+                <a href="#skills" class="block px-3 py-2 text-gray-600 hover:bg-blue-500 hover:text-white rounded-md">Skills</a>
+                <a href="#projects" class="block px-3 py-2 text-gray-600 hover:bg-blue-500 hover:text-white rounded-md">Projects</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-600 hover:bg-blue-500 hover:text-white rounded-md">Contact</a>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-blue-700 pt-24">
+        <!-- Profile Picture Section -->
+        <div class="mb-12">
+            <div class="code-frame-container">             
+                <div class="code-frame">                 
+                    <div class="profile-pic-container">  
+                        <img src="IMG_2257.HEIC" alt="Aymen Boutaraa" class="profile-pic">            
+                        <div class="code-overlay"></div> 
+                        <div class="code-lines"></div> 
+                    </div>
+                </div>  
+            </div> 
+        </div>
+        <!-- Name Section -->
+        <div class="text-center">
+            <div class="name-wrapper">
+                <div class="name-container">
+                    <!-- First Name -->
+                    <span class="letter html-letter">A</span>
+                    <span class="letter python-letter">y</span>
+                    <span class="letter mongo-letter">m</span>
+                    <span class="letter react-letter">e</span>
+                    <span class="letter node-letter">n</span>
+                    
+                    <div class="name-separator"></div>
+                    
+                    <!-- Last Name -->
+                    <span class="letter ts-letter">B</span>
+                    <span class="letter next-letter">o</span>
+                    <span class="letter vue-letter">u</span>
+                    <span class="letter angular-letter">t</span>
+                    <span class="letter redux-letter">a</span>
+                    <span class="letter graphql-letter">r</span>
+                    <span class="letter webpack-letter">a</span>
+                    <span class="letter sass-letter">a</span>
+                </div>
+                <div>
+                <body class="bg-gradient-to-br from-black to-gray-900 min-h-screen flex items-center justify-center">
+                    <div class="text-center">
+                        <p class="text-4xl font-bold text-white opacity-90 mt-8 mb-8 wavy-text">
+                            Full Stack Developer
+                        </p>
+    
+                        <div class="flex justify-center space-x-4">
+                            <a href="#contact" class="glowing-button bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-gradient-to-l hover:from-blue-600 hover:via-blue-500 hover:to-blue-400 transform hover:scale-105 transition-all duration-300">
+                                <span class="relative z-10">Get in Touch</span>
+                            </a>
+                            <a href="#projects" class="glowing-button bg-gradient-to-r from-black via-gray-800 to-gray-900 text-white px-8 py-4 rounded-full font-semibold hover:bg-gradient-to-l hover:from-gray-900 hover:via-gray-800 hover:to-black transform hover:scale-105 transition-all duration-300">
+                                <span class="relative z-10">View Work</span>
+                            </a>
+                        </div>
+                    </div>
+                <style>
+        /* Wavy Mountain Text Animation */
+        @keyframes wavyMountain {
+            0%, 100% { 
+                transform: translateY(0) rotate(-5deg); 
+            }
+            25% { 
+                transform: translateY(-15px) rotate(5deg); 
+            }
+            50% { 
+                transform: translateY(-25px) rotate(-3deg); 
+            }
+            75% { 
+                transform: translateY(-15px) rotate(3deg); 
+            }
+        }
+
+        /* Glowing Button Animation */
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(255,255,255,0.3), 
+                            0 0 10px rgba(168, 85, 247, 0.5), 
+                            0 0 20px rgba(236, 72, 153, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(255,255,255,0.5), 
+                            0 0 25px rgba(168, 85, 247, 0.7), 
+                            0 0 35px rgba(236, 72, 153, 0.5);
+            }
+        }
+
+        .wavy-text {
+            display: inline-block;
+            animation: wavyMountain 4s ease-in-out infinite;
+            transform-origin: center;
+            will-change: transform;
+        }
+
+        .glowing-button {
+            position: relative;
+            overflow: hidden;
+            animation: glow 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .glowing-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 70%);
+            transform: rotate(0deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .glowing-button:hover::before {
+            transform: rotate(360deg);
+            opacity: 1;
+        }
+    </style>
+</div>
+</header>
+<!-- About Section -->
+<section id="about" class="py-20 bg-white relative">
+    <div class="w-full px-4">
+        <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">About Me</h2>
+        <div class="max-w-full mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Left Column - Main Info -->
+                <div class="space-y-8">
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Who I Am</h3>
+                        <div class="space-y-4 text-gray-600">
+                            <p class="animate-on-scroll leading-relaxed">Hello! I'm Aymen Boutaraa, a passionate Full Stack Developer from Algeria with a creative approach to problem-solving and a keen eye for detail. At 22, I've already developed a strong foundation in both frontend and backend technologies.</p>
+                            <p class="animate-on-scroll leading-relaxed">My journey in tech began with a curiosity about how things work on the web, which evolved into a deep passion for creating seamless, user-centric applications.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white">
+                            <h4 class="font-semibold text-xl mb-3">Technical Focus</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li>Full-stack Development</li>
+                                <li>Modern Frameworks</li>
+                                <li>Responsive Design</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-xl text-white">
+                            <h4 class="font-semibold text-xl mb-3">Core Values</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li>Clean Code</li>
+                                <li>User Experience</li>
+                                <li>Best Practices</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Professional Highlights -->
+                <div class="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Professional Highlights</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mt-1">
+                                <i class="fas fa-laptop-code text-blue-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg">Full Stack Expert</h4>
+                                <p class="text-gray-600 mt-2">Proficient in both frontend and backend development, creating complete web solutions from concept to deployment.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mt-1">
+                                <i class="fas fa-brain text-purple-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg">Problem Solver</h4>
+                                <p class="text-gray-600 mt-2">Analytical thinker with a talent for finding innovative solutions to complex technical challenges.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mt-1">
+                                <i class="fas fa-users text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-lg">Team Player</h4>
+                                <p class="text-gray-600 mt-2">Strong communicator with experience in collaborative development environments and agile methodologies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Skills Section -->
+<section id="skills" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">Technical Skills</h2>
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-html5 text-5xl text-orange-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">HTML5</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-orange-500 h-2 rounded-full progress-bar" data-width="95"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-css3-alt text-5xl text-blue-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">CSS3</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full progress-bar" data-width="90"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-js text-5xl text-yellow-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">JavaScript</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full progress-bar" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-react text-5xl text-blue-400 mb-4"></i>
+                    <h3 class="font-semibold mb-2">React</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-400 h-2 rounded-full progress-bar" data-width="80"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-node text-5xl text-green-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">Node.js</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full progress-bar" data-width="75"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-php text-5xl text-purple-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">PHP</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full progress-bar" data-width="70"></div>
+                    </div>
+                </div>
+                <!-- New skill cards added -->
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-python text-5xl text-blue-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">Python</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full progress-bar" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform transition-all duration-300">
+                    <i class="fab fa-react text-5xl text-purple-500 mb-4"></i>
+                    <h3 class="font-semibold mb-2">React Native</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full progress-bar" data-width="80"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-all duration-300">
+                    <svg class="mx-auto h-12 w-12 mb-4" viewBox="0 0 180 180" fill="none">
+                        <mask id="mask0_408_134" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="180" height="180">
+                            <circle cx="90" cy="90" r="90" fill="black"/>
+                        </mask>
+                        <g mask="url(#mask0_408_134)">
+                            <circle cx="90" cy="90" r="90" fill="black"/>
+                            <path d="M149.508 157.52L69.142 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.165 149.508 157.52Z" fill="url(#paint0_linear_408_134)"/>
+                            <rect x="115" y="54" width="12" height="72" fill="url(#paint1_linear_408_134)"/>
+                        </g>
+                        <defs>
+                            <linearGradient id="paint0_linear_408_134" x1="109" y1="116.5" x2="144.5" y2="160.5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="white"/>
+                                <stop offset="1" stop-color="white" stop-opacity="0"/>
+                            </linearGradient>
+                            <linearGradient id="paint1_linear_408_134" x1="121" y1="54" x2="120.799" y2="106.875" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="white"/>
+                                <stop offset="1" stop-color="white" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h3 class="font-semibold mb-2">Next.js</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-black h-2 rounded-full progress-bar" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-all duration-300">
+                    <svg class="mx-auto h-12 w-12 mb-4" viewBox="0 0 128 128">
+                        <path fill="#1FA6CA" d="M.2 68.6V13.4L48 41v18.4L16.1 41v36.8L.2 68.6z"></path>
+                        <path fill="#1C7FB6" d="M48 41l47.9-27.6v55.3L64 87l-16-9.2 32-18.4V41L48 59.4V41z"></path>
+                        <path fill="#1FA6CA" d="M48 77.8v18.4l32 18.4V96.2L48 77.8z"></path>
+                        <path fill="#1C7FB6" d="M80 114.6L127.8 87V50.2l-16 9.2v18.4L80 96.2v18.4zM111.9 41V22.6l16-9.2v18.4l-16 9.2z"></path>
+                    </svg>
+                    <h3 class="font-semibold mb-2">TypeScript</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full progress-bar" data-width="80"></div>
+                    </div>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-all duration-300">
+                    <svg class="mx-auto h-12 w-12 mb-4" viewBox="0 0 128 128">
+                        <path fill="#83CD29" d="M112.771 30.334L68.674 4.729c-2.781-1.584-6.402-1.584-9.205 0L14.901 30.334C12.031 31.985 10 35.088 10 38.407v51.142c0 3.319 2.084 6.423 4.954 8.083l11.775 6.688c5.628 2.772 7.617 2.772 10.178 2.772 8.333 0 13.093-5.039 13.093-13.828v-50.49c0-.713-.371-1.774-1.071-1.774h-5.623C42.594 41 41 42.061 41 42.773v50.49c0 3.896-3.524 7.773-10.11 4.48L18.723 90.73c-.424-.23-.723-.693-.723-1.181V38.407c0-.482.555-.966.982-1.213l44.424-25.561c.415-.235 1.025-.235 1.439 0l43.882 25.555c.42.253.272.722.272 1.219v51.142c0 .488.183.963-.232 1.198l-44.086 25.576c-.378.227-.847.227-1.261 0l-11.307-6.749c-.341-.198-.746-.269-1.073-.086-3.146 1.783-3.726 2.02-6.677 3.043-.726.253-1.797.692.41 1.929l14.798 8.754a9.294 9.294 0 004.647 1.246c1.642 0 3.25-.426 4.667-1.246l43.885-25.582c2.87-1.672 4.23-4.764 4.23-8.083V38.407c0-3.319-1.36-6.414-4.229-8.073zM77.91 81.445c-11.726 0-14.309-3.235-15.17-9.066-.1-.628-.633-1.379-1.272-1.379h-5.731c-.709 0-1.279.86-1.279 1.566 0 7.466 4.059 16.512 23.453 16.512 14.039 0 22.088-5.455 22.088-15.109 0-9.572-6.467-12.084-20.082-13.886-13.762-1.819-15.16-2.738-15.16-5.962 0-2.658 1.184-6.203 11.374-6.203 9.105 0 12.461 1.954 13.842 8.091.118.577.645.991 1.24.991h5.754c.354 0 .692-.143.94-.396.24-.272.367-.613.335-.979-.891-10.568-7.912-15.493-22.112-15.493-12.631 0-20.166 5.334-20.166 14.275 0 9.698 7.497 12.378 19.622 13.577 14.505 1.422 15.633 3.542 15.633 6.395 0 4.955-3.978 7.066-13.309 7.066z"></path>
+                    </svg>
+                    <h3 class="font-semibold mb-2">MongoDB</h3>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full progress-bar" data-width="85"></div>
+                    </div>
+                </div>
+                   <div class="skill-card bg-white p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-all duration-300">
+                            <svg class="mx-auto h-12 w-12 mb-4" viewBox="0 0 128 128">
+                                <path fill="#EA2D2E" d="M47.617 98.12s-4.767 2.774 3.397 3.71c9.892 1.13 14.947.968 25.845-1.092 0 0 2.871 1.795 6.873 3.351-24.439 10.47-55.308-.607-36.115-5.969zm-2.988-13.665s-5.348 3.959 2.823 4.805c10.567 1.091 18.91 1.18 33.354-1.6 0 0 1.993 2.025 5.132 3.131-29.542 8.64-62.446.68-41.309-6.336z"></path>
+                                <path fill="#EA2D2E" d="M69.802 61.271c6.025 6.935-1.58 13.17-1.58 13.17s15.289-7.891 8.269-17.777c-6.559-9.215-11.587-13.792 15.635-29.58 0 .001-42.731 10.67-22.324 34.187z"></path>
+                                <path fill="#EA2D2E" d="M102.123 108.229s3.529 2.91-3.888 5.159c-14.102 4.272-58.706 5.56-71.094.171-4.451-1.938 3.899-4.625 6.526-5.192 2.739-.593 4.303-.485 4.303-.485-4.953-3.487-32.013 6.85-13.743 9.815 49.821 8.076 90.817-3.637 77.896-9.468zM49.912 70.294s-22.686 5.389-8.033 7.348c6.188.828 18.518.638 30.011-.326 9.39-.789 18.813-2.474 18.813-2.474s-3.308 1.419-5.704 3.053c-23.042 6.061-67.544 3.238-54.731-2.958 10.832-5.239 19.644-4.643 19.644-4.643zm40.697 22.747c23.421-12.167 12.591-23.86 5.032-22.285-1.848.385-2.677.72-2.677.72s.688-1.079 2-1.543c14.953-5.255 26.451 15.503-4.823 23.725 0-.002.359-.327.468-.617z"></path>
+                                <path fill="#EA2D2E" d="M76.491 1.587S89.459 14.563 64.188 34.51c-20.266 16.006-4.621 25.13-.007 35.559-11.831-10.673-20.509-20.07-14.688-28.815C58.041 28.42 81.722 22.195 76.491 1.587z"></path>
+                            </svg>
+                            <h3 class="font-semibold mb-2">Java</h3>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-red-600 h-2 rounded-full progress-bar" data-width="75"></div>
+                            </div>
+                        </div>
+                         </div>
+                        </div>
+                        </section>
+                        <style>
+                        .skill-card {
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .skill-card:hover {
+                            transform: translateY(-10px);
+                            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                        }
+                        
+                        /* Progress bar animations */
+                        .progress-bar {
+                            transition: width 1.5s ease-in-out;
+                            width: 0;
+                        }
+                        
+                        /* Scroll animations */
+                        .animate-on-scroll {
+                            opacity: 0;
+                            transform: translateY(20px);
+                            transition: all 0.6s ease-out;
+                        }
+                        
+                        .animate-on-scroll.visible {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                        </style>
+                        <script>
+                            // Animate progress bars on scroll
+                            function initProgressBars() {
+                                const progressBars = document.querySelectorAll('.progress-bar');
+                                progressBars.forEach(bar => {
+                                    const width = bar.getAttribute('data-width');
+                                    bar.style.width = width + '%';
+                                });
+                            }
+                            
+                            // Animate elements on scroll
+                            function initScrollAnimations() {
+                                const elements = document.querySelectorAll('.animate-on-scroll');
+                                const observer = new IntersectionObserver((entries) => {
+                                    entries.forEach(entry => {
+                                        if (entry.isIntersecting) {
+                                            entry.target.classList.add('visible');
+                                        }
+                                    });
+                                }, { threshold: 0.1 });
+                            
+                                elements.forEach(element => observer.observe(element));
+                            }
+                            
+                            // Initialize animations
+                            document.addEventListener('DOMContentLoaded', () => {
+                                initProgressBars();
+                                initScrollAnimations();
+                            });
+                            </script>
+<!-- Projects Section -->
+<section id="projects" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">Featured Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="group relative overflow-hidden rounded-xl shadow-lg transform hover:scale-105 transition duration-500 col-span-1 md:col-span-2">
+                <img src="different programming sites on a desktop without people.png" alt="Project 1" class="w-full h-96 object-cover transform group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-90 transition-opacity duration-300">
+                    <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+                        <h3 class="font-bold text-2xl mb-2">Project Title</h3>
+                        <p class="text-base mb-4">Brief description of the project goes here. Technologies used and key features.</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-white hover:text-blue-300 transition">
+                                <i class="fab fa-github"></i> View Code
+                            </a>
+                            <a href="project_room.html" class="text-white hover:text-blue-300 transition">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more project cards here -->
+        </div>
+    </div>
+</section>
+<!-- Contact Section -->
+<section id="contact" class="py-20 bg-white">
+    <div class="w-full px-4">
+        <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">Get In Touch</h2>
+        
+        <div class="grid lg:grid-cols-2 gap-8 max-w-full mx-auto">
+            <!-- Contact Info Card -->
+            <div class="bg-gray-800 rounded-xl shadow-xl p-8">
+                <div class="space-y-8">
+                    <!-- Email with envelope animation -->
+                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                        <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                            <i class="fas fa-envelope text-blue-400 animate-email"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4 class="text-sm font-medium text-gray-400">Email</h4>
+                            <p class="text-lg font-semibold text-gray-100 break-all">aymenbtr33@gmail.com
+                                /boutaraaaymen998@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Phone with ring animation -->
+                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                        <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                            <i class="fas fa-phone-alt text-green-400 animate-phone"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4 class="text-sm font-medium text-gray-400">Phone</h4>
+                            <p class="text-lg font-semibold text-gray-100">+213 697251047</p>
+                        </div>
+                    </div>
+
+                    <!-- Location with bounce animation -->
+                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                        <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                            <i class="fas fa-map-marker-alt text-purple-400 animate-location"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4 class="text-sm font-medium text-gray-400">Location</h4>
+                            <p class="text-lg font-semibold text-gray-100">Algeria, Chlef</p>
+                        </div>
+                    </div>
+
+                    <!-- Working Hours with clock animation -->
+                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                        <div class="w-12 h-12 bg-yellow-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                            <i class="fas fa-clock text-yellow-400 animate-clock"></i>
+                        </div>
+                        <div class="contact-info-text">
+                            <h4 class="text-sm font-medium text-gray-400">Working Hours</h4>
+                            <p class="text-lg font-semibold text-gray-100">All the time</p>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Social Links -->
+                    <div class="mt-8 pt-6 border-t border-gray-700">
+                        <h4 class="text-sm font-medium text-gray-400 mb-4 text-center">Connect With Me</h4>
+                        <div class="flex justify-center space-x-6">
+                            <!-- LinkedIn -->
+                            <a href="https://www.linkedin.com/in/aymen-boutaraa-1a508334a" class="social-link linkedin-link group">
+                                <div class="w-12 h-12 bg-blue-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-blue-600 group-hover:bg-opacity-40 transition-all duration-300">
+                                    <i class="fab fa-linkedin-in text-blue-500 group-hover:text-white transition-colors duration-300"></i>
+                                </div>
+                                <span class="social-tooltip">LinkedIn</span>
+                            </a>
+
+                            <!-- GitHub -->
+                            <a href="#" class="social-link github-link group">
+                                <div class="w-12 h-12 bg-gray-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-gray-600 group-hover:bg-opacity-40 transition-all duration-300">
+                                    <i class="fab fa-github text-gray-500 group-hover:text-white transition-colors duration-300"></i>
+                                </div>
+                                <span class="social-tooltip">GitHub</span>
+                            </a>
+
+                            <!-- Instagram (Replacing Twitter) -->
+                            <a href="http://www.instagram.com/master_of_css" class="social-link instagram-link group">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center social-icon-wrapper">
+                                    <i class="fab fa-instagram text-white"></i>
+                                </div>
+                                <span class="social-tooltip">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form or additional content can go here -->
+            <div class="bg-white rounded-xl shadow-xl p-8">
+                <!-- Additional content here -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Aymen Boutaraa</h3>
+                <p class="text-gray-400">Full Stack Developer passionate about creating innovative web solutions.</p>
+                <div class="flex space-x-4 mt-4">
+                </div>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">Quick Links</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="#about" class="text-gray-400 hover:text-white hover:pl-2 transition-all duration-300">
+                        <i class="fas fa-chevron-right mr-2 text-xs"></i>About
+                    </a>
+                    <a href="#skills" class="text-gray-400 hover:text-white hover:pl-2 transition-all duration-300">
+                        <i class="fas fa-chevron-right mr-2 text-xs"></i>Skills
+                    </a>
+                    <a href="#projects" class="text-gray-400 hover:text-white hover:pl-2 transition-all duration-300">
+                        <i class="fas fa-chevron-right mr-2 text-xs"></i>Projects
+                    </a>
+                    <a href="#contact" class="text-gray-400 hover:text-white hover:pl-2 transition-all duration-300">
+                        <i class="fas fa-chevron-right mr-2 text-xs"></i>Contact
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">Stay Connected</h4>
+                <form class="flex">
+                    <input 
+                        type="email" 
+                        placeholder="Your email address" 
+                        class="px-4 py-2 rounded-l-lg w-full bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-2 rounded-r-lg hover:from-purple-600 hover:to-blue-500 transition-all duration-300"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p class="text-xs text-gray-500 mt-2">Subscribe for latest updates and news</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+            <p class="text-gray-500">
+                &copy; 2025 Aymen Boutaraa. All Rights Reserved. 
+                <span class="block md:inline mt-2 md:mt-0">
+                    Crafted with <i class="fas fa-heart text-red-500 mx-1"></i> in Algeria
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+<script>
+  // Enhanced Matrix Rain Animation with Color Sync
+const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        // Programming languages and symbols
+        const languages = [
+            'JavaScript', 'Python', 'React', 'Node.js', 'HTML', 'CSS',
+            'TypeScript', 'MongoDB', 'Express', 'SQL', 'Git', 'API',
+            '{', '}', '()', '[]', '<>', '//', '&&', '||', '=>', '++',
+            'function', 'const', 'let', 'var', 'return', 'import', 'export',
+            'async', 'await', 'class', 'interface', 'enum', 'try', 'catch',
+            'promise', 'map', 'filter', 'reduce', 'components', 'props', 'state'
+        ];
+
+        const columns = Math.floor(canvas.width / 20);
+        const drops = new Array(columns).fill(0);
+
+        // Dynamic colors that change with time
+        function getCurrentColor() {
+            const time = Date.now() * 0.001; // Slower color change
+            const r = Math.sin(time * 0.3) * 127 + 128;
+            const g = Math.sin(time * 0.5) * 127 + 128;
+            const b = Math.sin(time * 0.7) * 127 + 128;
+            return `rgba(${r}, ${g}, ${b}, 0.7)`;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = '15px monospace';
+            ctx.fillStyle = getCurrentColor();
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = languages[Math.floor(Math.random() * languages.length)];
+                const x = i * 20;
+                const y = drops[i] * 20;
+
+                // Add glow effect
+                ctx.shadowColor = getCurrentColor();
+                ctx.shadowBlur = 5;
+                ctx.fillText(text, x, y);
+                ctx.shadowBlur = 0;
+
+                // Reset position with varying speeds
+                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i] += 0.5 + Math.random() * 0.5; // Varying fall speeds
+            }
+        }
+
+        // Run animation
+        setInterval(draw, 33);
+
+        // Add dynamic background interaction
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            // Adjust matrix animation based on mouse position
+            const backgroundElement = document.querySelector('.matrix-background');
+            const gradientAngle = (mouseX * 360) % 360;
+            
+            backgroundElement.style.backgroundImage = `linear-gradient(
+                ${gradientAngle}deg,
+                rgba(65, 88, 208, 0.9) 0%,
+                rgba(200, 80, 192, 0.9) 25%,
+                rgba(255, 204, 112, 0.9) 50%,
+                rgba(80, 200, 120, 0.9) 75%,
+                rgba(65, 88, 208, 0.9) 100%
+            )`;
+        });
+    // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(this);
+
+    // Validate form data before sending
+    const fullName = formData.get('full_name');
+    const email = formData.get('email');
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+
+    // Check if all fields have values
+    if (!fullName || !email || !subject || !message) {
+        const statusDiv = document.getElementById('submission-status');
+        statusDiv.className = 'mt-4 text-center';
+        statusDiv.innerHTML = '<p class="text-sm font-medium text-red-400">Please fill in all fields</p>';
+        return;
+    }
+    
+    // Disable submit button during submission
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Sending...';
+    
+    // Show loading state
+    const statusDiv = document.getElementById('submission-status');
+    statusDiv.className = 'mt-4 text-center';
+    statusDiv.innerHTML = '<p class="text-sm font-medium text-gray-400">Sending message...</p>';
+    
+    // Send form data using fetch
+    fetch('process_contact.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Show success/error message
+        statusDiv.innerHTML = `<p class="text-sm font-medium ${
+            data.status === 'success' ? 'text-green-400' : 'text-red-400'
+        }">${data.message}</p>`;
+        
+        // Reset form on success
+        if (data.status === 'success') {
+            this.reset();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        statusDiv.innerHTML = '<p class="text-sm font-medium text-red-400">An error occurred. Please try again later.</p>';
+    })
+    .finally(() => {
+        // Re-enable submit button
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Send Message';
+    });
+});
+    </script>
+</body>
+</html>

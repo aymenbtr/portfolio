@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Room</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .wood-pattern {
+            background-image: url('PH186230.avif');
+            background-color: #4a3428;
+            position: relative;
+        }
+
+        /* Remove or comment out the brown gradient overlay */
+        /* .wood-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(74, 52, 40, 0.92), 
+                rgba(92, 64, 51, 0.85),
+                rgba(120, 76, 51, 0.88));
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
+            z-index: 1;
+        } */
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-container {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .title-text {
+            color: white; /* Set text color to white */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Keep the text shadow */
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes titleReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+                letter-spacing: 0.5em;
+            }
+            50% {
+                letter-spacing: 0.2em;
+                transform: translateY(-10px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                letter-spacing: normal;
+            }
+        }
+
+        .title-animation {
+            animation: 
+                titleReveal 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .subtitle {
+            color: white; /* Set subtitle text color to white */
+            animation: fadeInUp 1.2s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes projectNameReveal {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+                background-position: 200% center;
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+                background-position: 0% center;
+            }
+        }
+
+        .project-name {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: projectNameReveal 0.8s ease forwards;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="wood-pattern min-h-screen">
+    <!-- Enhanced Header Section -->
+    <header class="bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 content-layer">
+            <div class="title-container">
+                <h1 class="text-7xl font-bold text-center title-animation">
+                    <span class="title-text" data-text="Project Room">Project Room</span>
+                </h1>
+                <p class="mt-6 text-2xl text-center subtitle">
+                    Discover our creative journey
+                </p>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 content-layer">
+        <!-- Projects Grid -->
+        <div id="projectsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- Projects will be dynamically added here -->
+        </div>
+
+        <!-- Empty State Message -->
+        <div id="emptyState" class="hidden">
+            <div class="text-center py-16 px-4 fade-in-up">
+                <div class="bg-black/30 backdrop-blur-xl rounded-xl shadow-2xl p-8 max-w-lg mx-auto">
+                    <svg class="mx-auto h-16 w-16 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                    <p class="mt-4 text-white text-xl font-medium">No projects available yet</p>
+                    <p class="mt-2 text-gray-300">Check back soon for exciting new content!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+      <script>
+        function createProjectCard(project, index) {
+            const card = document.createElement('div');
+            card.className = 'bg-black/30 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-102 hover:shadow-2xl fade-in-up';
+            card.style.animationDelay = `${index * 200}ms`;
+            
+            const mediaElement = project.fileType.startsWith('video')
+                ? `<video src="${project.mediaUrl}" class="w-full h-[60vh] object-cover transition duration-700 hover:brightness-110 hover:scale-105 transform" controls></video>`
+                : `<img src="${project.mediaUrl}" alt="${project.name}" class="w-full h-[60vh] object-cover transition duration-700 hover:brightness-110 hover:scale-105 transform">`;
+            
+            card.innerHTML = `
+                <div class="group relative overflow-hidden">
+                    ${mediaElement}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+                <div class="p-8 space-y-4 relative bg-black/20 backdrop-blur-xl">
+                    <h3 class="text-3xl font-bold project-name" style="animation-delay: ${index * 200 + 300}ms">
+                        ${project.name}
+                    </h3>
+                    <a href="${project.link}" target="_blank" 
+                       class="inline-flex items-center text-white hover:text-orange-300 font-medium transition-all duration-300 group">
+                        Explore Project
+                        <svg class="ml-2 w-5 h-5 transition-all duration-300 transform group-hover:translate-x-2" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const projectsGrid = document.getElementById('projectsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            
+            if (projects.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                
+                projects.sort((a, b) => b.timestamp - a.timestamp);
+                
+                projects.forEach((project, index) => {
+                    const card = createProjectCard(project, index);
+                    projectsGrid.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
