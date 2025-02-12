@@ -796,127 +796,156 @@
         }
         
         /* Navigation glow effects */
-        .social-link {
-            position: relative;
-            display: inline-block;
-        }
+        /* Base social link styles */
+.social-link {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
 
-        .social-icon-wrapper {
-            transition: all 0.3s ease;
-        }
+.social-link:hover {
+    transform: translateY(-2px);
+}
 
-        .social-tooltip {
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+/* Social icon wrapper styles */
+.social-icon-wrapper {
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
 
-        .social-link:hover .social-tooltip {
-            opacity: 1;
-            bottom: -25px;
-        }
+/* Enhanced tooltip styles */
+.social-tooltip {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* Glowing effect for social icons */
-        .social-icon-wrapper:hover {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-            transform: translateY(-2px);
-        }
+.social-link:hover .social-tooltip {
+    opacity: 1;
+    bottom: -35px;
+    transform: translateX(-50%) scale(1);
+}
 
-/* LinkedIn specific hover effect */
+/* Platform-specific hover effects */
+.linkedin-link .social-icon-wrapper {
+    background: rgba(0, 119, 181, 0.1);
+    transition: all 0.3s ease;
+}
+
 .linkedin-link:hover .social-icon-wrapper {
     background: rgba(0, 119, 181, 0.3);
+    box-shadow: 0 0 20px rgba(0, 119, 181, 0.4);
 }
 
-/* GitHub specific hover effect */
+.github-link .social-icon-wrapper {
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
 .github-link:hover .social-icon-wrapper {
     background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-/* Enhanced contact icon animations */
-@keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .contact-icon-wrapper i {
-            transition: all 0.3s ease;
-        }
-
-        .contact-icon-wrapper:hover i {
-            animation: pulse 1s infinite;
-        }
-
-        /* New Instagram gradient */
-        .instagram-link .social-icon-wrapper {
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
-            opacity: 0.8;
-        }
-
-        .instagram-link:hover .social-icon-wrapper {
-            opacity: 1;
-        }
-
-/* Enhanced contact item animations */
-.contact-item {
+.instagram-link .social-icon-wrapper {
+    background: linear-gradient(
+        45deg,
+        #405DE6,
+        #5851DB,
+        #833AB4,
+        #C13584,
+        #E1306C,
+        #FD1D1D
+    );
+    opacity: 0.8;
     transition: all 0.3s ease;
+}
+
+.instagram-link:hover .social-icon-wrapper {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(225, 48, 108, 0.4);
+}
+
+/* Contact item animations */
+.contact-item {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 1rem;
+    border-radius: 12px;
 }
 
 .contact-item:hover {
     transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .contact-icon-wrapper {
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .contact-item:hover .contact-icon-wrapper {
     transform: scale(1.1);
 }
 
-/* Animation keyframes for contact icons */
+/* Icon-specific animations */
 @keyframes emailWiggle {
     0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
 }
 
 @keyframes phoneRing {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-15deg); }
-    75% { transform: rotate(15deg); }
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-12deg) scale(1.1); }
+    75% { transform: rotate(12deg) scale(1.1); }
 }
 
 @keyframes locationBounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-6px); }
 }
 
 @keyframes clockSpin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-@keyframes shine {
-    0% {
-        opacity: 1;
-        transform: rotate(45deg) translateY(-100%);
-    }
-    100% {
-        opacity: 0;
-        transform: rotate(45deg) translateY(100%);
-    }
+
+.animate-email {
+    animation: emailWiggle 3s ease-in-out infinite;
+    transform-origin: center;
 }
 
-/* Matrix Background Animation */
+.animate-phone {
+    animation: phoneRing 3s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.animate-location {
+    animation: locationBounce 2.5s ease-in-out infinite;
+}
+
+.animate-clock {
+    animation: clockSpin 10s linear infinite;
+    transform-origin: center;
+}
+
+/* Fade-in animation for contact items */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -932,23 +961,22 @@
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Apply animations to icons */
-.animate-email {
-    animation: emailWiggle 2s ease-in-out infinite;
+/* Hover glow effect */
+.contact-item:hover .contact-icon-wrapper {
+    box-shadow: 0 0 15px currentColor;
 }
 
-.animate-phone {
-    animation: phoneRing 2s ease-in-out infinite;
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .social-tooltip {
+        display: none;
+    }
+    
+    .contact-item:hover {
+        transform: translateY(-3px);
+    }
 }
-
-.animate-location {
-    animation: locationBounce 2s ease-in-out infinite;
-}
-
-.animate-clock {
-    animation: clockSpin 8s linear infinite;
-}
-    </style>
+</style>
 </head>
 <body class="bg-transparent">
     <!-- Matrix Background Container -->
@@ -1387,94 +1415,96 @@
     </div>
 </section>
 <!-- Contact Section -->
-<section id="contact" class="py-20 bg-white">
-    <div class="w-full px-4">
+<section id="contact" class="min-h-screen flex items-center justify-center bg-white py-20">
+    <div class="container mx-auto px-4 flex flex-col items-center"> <!-- Added flex and items-center -->
         <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">Get In Touch</h2>
         
-        <div class="grid lg:grid-cols-2 gap-8 max-w-full mx-auto">
-            <!-- Contact Info Card -->
-            <div class="bg-gray-800 rounded-xl shadow-xl p-8">
-                <div class="space-y-8">
-                    <!-- Email with envelope animation -->
-                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
-                        <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
-                            <i class="fas fa-envelope text-blue-400 animate-email"></i>
-                        </div>
-                        <div class="contact-info-text">
-                            <h4 class="text-sm font-medium text-gray-400">Email</h4>
-                            <p class="text-lg font-semibold text-gray-100 break-all">aymenbtr33@gmail.com
-                                /boutaraaaymen998@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <!-- Phone with ring animation -->
-                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
-                        <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
-                            <i class="fas fa-phone-alt text-green-400 animate-phone"></i>
-                        </div>
-                        <div class="contact-info-text">
-                            <h4 class="text-sm font-medium text-gray-400">Phone</h4>
-                            <p class="text-lg font-semibold text-gray-100">+213 697251047</p>
-                        </div>
-                    </div>
-
-                    <!-- Location with bounce animation -->
-                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
-                        <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
-                            <i class="fas fa-map-marker-alt text-purple-400 animate-location"></i>
-                        </div>
-                        <div class="contact-info-text">
-                            <h4 class="text-sm font-medium text-gray-400">Location</h4>
-                            <p class="text-lg font-semibold text-gray-100">Algeria, Chlef</p>
-                        </div>
-                    </div>
-
-                    <!-- Working Hours with clock animation -->
-                    <div class="flex flex-col items-center text-center space-y-2 contact-item">
-                        <div class="w-12 h-12 bg-yellow-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
-                            <i class="fas fa-clock text-yellow-400 animate-clock"></i>
-                        </div>
-                        <div class="contact-info-text">
-                            <h4 class="text-sm font-medium text-gray-400">Working Hours</h4>
-                            <p class="text-lg font-semibold text-gray-100">All the time</p>
-                        </div>
-                    </div>
-
-                    <!-- Enhanced Social Links -->
-                    <div class="mt-8 pt-6 border-t border-gray-700">
-                        <h4 class="text-sm font-medium text-gray-400 mb-4 text-center">Connect With Me</h4>
-                        <div class="flex justify-center space-x-6">
-                            <!-- LinkedIn -->
-                            <a href="https://www.linkedin.com/in/aymen-boutaraa-1a508334a" class="social-link linkedin-link group">
-                                <div class="w-12 h-12 bg-blue-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-blue-600 group-hover:bg-opacity-40 transition-all duration-300">
-                                    <i class="fab fa-linkedin-in text-blue-500 group-hover:text-white transition-colors duration-300"></i>
+        <!-- Centered content container -->
+          <!-- Contact Info Card -->
+                        <div class="bg-gray-800 rounded-xl shadow-xl p-8 w-full max-w-xl"> <!-- Added w-full and max-w-xl -->
+                            <div class="space-y-8">
+                                <!-- Email with envelope animation -->
+                                <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                                    <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                                        <i class="fas fa-envelope text-blue-400 animate-email"></i>
+                                    </div>
+                                    <div class="contact-info-text">
+                                        <h4 class="text-sm font-medium text-gray-400">Email</h4>
+                                        <p class="text-lg font-semibold text-gray-100 break-all">aymenbtr33@gmail.com /boutaraaaymen998@gmail.com</p>
+                                    </div>
                                 </div>
-                                <span class="social-tooltip">LinkedIn</span>
-                            </a>
 
-                            <!-- GitHub -->
-                            <a href="#" class="social-link github-link group">
-                                <div class="w-12 h-12 bg-gray-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-gray-600 group-hover:bg-opacity-40 transition-all duration-300">
-                                    <i class="fab fa-github text-gray-500 group-hover:text-white transition-colors duration-300"></i>
+                                <!-- Phone with ring animation -->
+                                <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                                    <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                                        <i class="fas fa-phone-alt text-green-400 animate-phone"></i>
+                                    </div>
+                                    <div class="contact-info-text">
+                                        <h4 class="text-sm font-medium text-gray-400">Phone</h4>
+                                        <p class="text-lg font-semibold text-gray-100">+213 697251047</p>
+                                    </div>
                                 </div>
-                                <span class="social-tooltip">GitHub</span>
-                            </a>
 
-                            <!-- Instagram (Replacing Twitter) -->
-                            <a href="http://www.instagram.com/master_of_css" class="social-link instagram-link group">
-                                <div class="w-12 h-12 rounded-xl flex items-center justify-center social-icon-wrapper">
-                                    <i class="fab fa-instagram text-white"></i>
+                                <!-- Location with bounce animation -->
+                                <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                                    <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                                        <i class="fas fa-map-marker-alt text-purple-400 animate-location"></i>
+                                    </div>
+                                    <div class="contact-info-text">
+                                        <h4 class="text-sm font-medium text-gray-400">Location</h4>
+                                        <p class="text-lg font-semibold text-gray-100">Algeria, Chlef</p>
+                                    </div>
                                 </div>
-                                <span class="social-tooltip">Instagram</span>
-                            </a>
+
+                                <!-- Working Hours with clock animation -->
+                                <div class="flex flex-col items-center text-center space-y-2 contact-item">
+                                    <div class="w-12 h-12 bg-yellow-500 bg-opacity-20 rounded-xl flex items-center justify-center contact-icon-wrapper">
+                                        <i class="fas fa-clock text-yellow-400 animate-clock"></i>
+                                    </div>
+                                    <div class="contact-info-text">
+                                        <h4 class="text-sm font-medium text-gray-400">Working Hours</h4>
+                                        <p class="text-lg font-semibold text-gray-100">All the time</p>
+                                    </div>
+                                </div>
+
+                                <!-- Social Links -->
+                                <div class="mt-8 pt-6 border-t border-gray-700">
+                                    <h4 class="text-sm font-medium text-gray-400 mb-4 text-center">Connect With Me</h4>
+                                    <div class="flex justify-center space-x-6">
+                                        <!-- LinkedIn -->
+                                        <a href="https://www.linkedin.com/in/aymen-boutaraa-1a508334a" class="social-link linkedin-link group">
+                                            <div class="w-12 h-12 bg-blue-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-blue-600 group-hover:bg-opacity-40 transition-all duration-300">
+                                                <i class="fab fa-linkedin-in text-blue-500 group-hover:text-white transition-colors duration-300"></i>
+                                            </div>
+                                            <span class="social-tooltip">LinkedIn</span>
+                                        </a>
+
+                                        <!-- GitHub -->
+                                        <a href="#" class="social-link github-link group">
+                                            <div class="w-12 h-12 bg-gray-600 bg-opacity-20 rounded-xl flex items-center justify-center social-icon-wrapper group-hover:bg-gray-600 group-hover:bg-opacity-40 transition-all duration-300">
+                                                <i class="fab fa-github text-gray-500 group-hover:text-white transition-colors duration-300"></i>
+                                            </div>
+                                            <span class="social-tooltip">GitHub</span>
+                                        </a>
+
+                                        <!-- Instagram -->
+                                        <a href="http://www.instagram.com/master_of_css" class="social-link instagram-link group">
+                                            <div class="w-12 h-12 rounded-xl flex items-center justify-center social-icon-wrapper">
+                                                <i class="fab fa-instagram text-white"></i>
+                                            </div>
+                                            <span class="social-tooltip">Instagram</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Form or additional content -->
+                        <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-xl"> <!-- Added w-full and max-w-xl -->
+                            <!-- Additional content here -->
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Contact Form or additional content can go here -->
-            <div class="bg-white rounded-xl shadow-xl p-8">
-                <!-- Additional content here -->
             </div>
         </div>
     </div>
