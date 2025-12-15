@@ -1,0 +1,657 @@
+ <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aymen Boutaraa - Full-Stack Developer</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #8b5cf6;
+                --secondary: #ec4899;
+                --accent: #0ea5e9;
+                --dark: #0f172a;
+                --darker: #020617;
+            }
+            
+            * { 
+                font-family: 'Space Grotesk', 'Inter', sans-serif; 
+                scroll-behavior: smooth;
+            }
+            .font-mono { font-family: 'Fira Code', monospace; }
+            
+            /* Custom Animations */
+            @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+            @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); } }
+            @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+            @keyframes slide-in { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            
+            .animate-float { animation: float 4s ease-in-out infinite; }
+            .animate-glow { animation: glow 2s ease-in-out infinite; }
+            .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+            .animate-slide-in { animation: slide-in 0.6s ease-out; }
+            
+            /* Glassmorphism Effect */
+            .glass { 
+                backdrop-filter: blur(20px); 
+                background: rgba(255, 255, 255, 0.05); 
+                border: 1px solid rgba(255, 255, 255, 0.1); 
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+            
+            /* Gradient Text */
+            .gradient-text { 
+                background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent)); 
+                -webkit-background-clip: text; 
+                -webkit-text-fill-color: transparent; 
+                background-clip: text; 
+            }
+            
+            /* Terminal Cursor */
+            .terminal-cursor {
+                display: inline-block;
+                width: 10px;
+                height: 20px;
+                background: var(--primary);
+                margin-left: 5px;
+                animation: pulse 1s infinite;
+            }  
+                @keyframes magic-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.05); opacity: 1; }
+    }
+    
+    .group:hover svg {
+        animation: magic-pulse 3s ease-in-out infinite;
+    }
+    
+    #magic-a {
+        filter: url(#magic-glow);
+    }
+    
+    #final-a {
+        stroke: #8b5cf6;
+        filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.7));
+    }
+        </style>
+    </head>
+    <body class="bg-slate-950 text-white">
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 glass-dark border-b border-purple-500/20">
+            <div class="container mx-auto px-6">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Logo -->
+                    <a href="index.html" class="flex items-center space-x-3 group">
+                    <div class="relative w-14 h-14 group cursor-pointer">
+    <!-- Background glow -->
+    <div class="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-900/80 to-pink-900/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    
+    <!-- Main logo container -->
+    <div class="relative w-full h-full bg-gradient-to-br from-purple-950 to-pink-950 rounded-xl flex items-center justify-center overflow-hidden">
+        <!-- Animated SVG -->
+        <svg viewBox="0 0 100 100" class="w-10 h-10 text-white">
+        <!-- Magical wind particles -->
+        {[0,1,2,3,4,5,6,7].map(i => (
+    <circle 
+        key={`particle-${i}`} 
+        cx="50" cy="50" 
+        r="1.5" 
+        fill="url(#particle-grad)" 
+        opacity="0"
+    >
+        {/* Fade in/out animation */}
+        <animate 
+        attributeName="opacity" 
+        values="0;0.8;0" 
+        dur="2s" 
+        begin={`${i*0.2}s`} 
+        repeatCount="indefinite" 
+        />
+        
+        {/* Circular motion animation (X coordinate) */}
+        <animate 
+        attributeName="cx" 
+        values="50;${50+Math.cos(i*0.8)*30};50" 
+        dur="4s" 
+        begin="0s" 
+        repeatCount="indefinite" 
+        />
+        
+        {/* Circular motion animation (Y coordinate) */}
+        <animate 
+        attributeName="cy" 
+        values="50;${50+Math.sin(i*0.8)*30};50" 
+        dur="4s" 
+        begin="0s" 
+        repeatCount="indefinite" 
+        />
+    </circle>
+    ))}
+        
+        <!-- Letter A (appears after wind) -->
+        <path id="magic-a" d="M30 70 L50 30 L70 70 M40 55 H60" fill="none" stroke="white" stroke-width="4" stroke-dasharray="200" stroke-dashoffset="200" opacity="0" stroke-linecap="round" stroke-linejoin="round">
+            <animate attributeName="stroke-dashoffset" values="200;0" dur="0.8s" begin="1.5s" fill="freeze" />
+            <animate attributeName="opacity" values="0;1" dur="0.3s" begin="1.5s" fill="freeze" />
+        </path>
+        
+        <!-- Full name "Aymen" (appears after A) -->
+        <text id="name-text" x="50" y="85" text-anchor="middle" font-size="12" fill="white" opacity="0" font-weight="bold">
+            <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2.5s" fill="freeze" />
+            <animate attributeName="opacity" values="1;0" dur="0.5s" begin="4s" fill="freeze" />
+        </text>
+        
+        <!-- Final A (remains after name disappears) -->
+        <use id="final-a" href="#magic-a" opacity="0">
+            <animate attributeName="opacity" values="0;1" dur="0.5s" begin="4.5s" fill="freeze" />
+        </use>
+        
+        <defs>
+            <!-- Particle gradient -->
+            <radialGradient id="particle-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ec4899" />
+            <stop offset="100%" stop-color="#f472b6" stop-opacity="0.7" />
+            </radialGradient>
+            
+            <!-- Glow filter -->
+            <filter id="magic-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+        </defs>
+        </svg>
+    </div>
+    
+    <!-- Continuous magic pulse effect -->
+    <div class="absolute inset-0 rounded-xl border border-transparent group-hover:border-pink-300/20 group-hover:rotate-180 transition-all duration-1000"></div>
+    </div>
+                        <div class="hidden sm:block">
+                            <span class="text-xl font-bold gradient-text">Aymen Boutaraa</span>
+                            <div class="text-sm text-gray-400 font-mono">Full-Stack Developer</div>
+                        </div>
+                    </a>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden lg:flex items-center space-x-8">
+                        <a href="index.html" class="relative group px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300">
+                            <span class="relative z-10">Home</span>
+                            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full"></div>
+                        </a>
+                        <a href="#about" class="relative group px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300">
+                            <span class="relative z-10">About</span>
+                            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full"></div>
+                        </a>
+                        <a href="#skills" class="relative group px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300">
+                            <span class="relative z-10">Skills</span>
+                            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full"></div>
+                        </a>
+                        <a href="MY_PROJECTS.html" class="relative group px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300">
+                            <span class="relative z-10">Projects</span>
+                            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 group-hover:w-full"></div>
+                        </a>
+                        <a href="contact.html" class="gradient-border">
+                            <span class="relative z-10 block px-6 py-3 text-white font-semibold hover:scale-105 transition-transform">
+                                Contact Me
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="lg:hidden relative w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-300">
+                        <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                            <span class="block h-0.5 w-6 bg-white transition-all duration-300 menu-line-1"></span>
+                            <span class="block h-0.5 w-6 bg-white transition-all duration-300 menu-line-2"></span>
+                            <span class="block h-0.5 w-6 bg-white transition-all duration-300 menu-line-3"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="lg:hidden mobile-menu fixed top-20 right-0 h-[calc(100vh-5rem)] w-80 glass-dark border-l border-purple-500/20 transform translate-x-full transition-transform duration-300">
+                <div class="p-6 space-y-4">
+                    <a href="index.html" class="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-300">
+                        <i class="fas fa-home mr-3"></i>Home
+                    </a>
+                    <a href="#about" class="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-300">
+                        <i class="fas fa-user mr-3"></i>About
+                    </a>
+                    <a href="#skills" class="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-300">
+                        <i class="fas fa-code mr-3"></i>Skills
+                    </a>
+                    <a href="MY_PROJECTS.html" class="block px-4 py-3 text-gray-300 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-300">
+                        <i class="fas fa-briefcase mr-3"></i>Projects
+                    </a>
+                    <a href="contact.html" class="block px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+                        <i class="fas fa-envelope mr-3"></i>Contact Me
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <script>
+            // Mobile menu toggle - Fixed version
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuLines = document.querySelectorAll('.menu-line-1, .menu-line-2, .menu-line-3');
+
+            let menuOpen = false;
+
+            function toggleMenu() {
+                menuOpen = !menuOpen;
+                
+                if (menuOpen) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    menuLines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    menuLines[1].style.opacity = '0';
+                    menuLines[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                    menuLines[0].style.transform = 'none';
+                    menuLines[1].style.opacity = '1';
+                    menuLines[2].style.transform = 'none';
+                }
+            }
+
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (menuOpen && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // Close menu when clicking on links
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (menuOpen) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // Smooth scrolling for anchor links - Fixed version
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') !== '#') {
+                        e.preventDefault();
+                        
+                        // Close mobile menu if open
+                        if (menuOpen) {
+                            toggleMenu();
+                        }
+                        
+                        const targetId = this.getAttribute('href');
+                        const target = document.querySelector(targetId);
+                        
+                        if (target) {
+                            const headerHeight = document.querySelector('nav').offsetHeight;
+                            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                            
+                            // Update URL without jumping
+                            if (history.pushState) {
+                                history.pushState(null, null, targetId);
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Add navbar background on scroll
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 50) {
+                    nav.style.background = 'rgba(0, 0, 0, 0.8)';
+                } else {
+                    nav.style.background = 'rgba(0, 0, 0, 0.3)';
+                }
+            });
+        document.addEventListener('DOMContentLoaded', () => {
+        const nameText = document.querySelector('#name-text');
+        nameText.textContent = 'Aymen';
+        
+        // Add random sparkles
+        setInterval(() => {
+        const svg = document.querySelector('svg');
+        const x = Math.random() * 80 + 10;
+        const y = Math.random() * 80 + 10;
+        
+        const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        sparkle.setAttribute('cx', x);
+        sparkle.setAttribute('cy', y);
+        sparkle.setAttribute('r', '0.8');
+        sparkle.setAttribute('fill', 'white');
+        sparkle.setAttribute('opacity', '0');
+        
+        sparkle.innerHTML = `
+            <animate attributeName="r" values="0;1.5;0" dur="1s" begin="0s" />
+            <animate attributeName="opacity" values="0;0.8;0" dur="1s" begin="0s" />
+        `;
+        
+        svg.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+        }, 300);
+    });
+</script>
+
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="relative py-20 lg:py-24 bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%239C92AC\" fill-opacity=\"0.03\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"4\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="text-center mb-12">
+                    <h1 class="text-5xl lg:text-7xl font-black text-white mb-6">
+                        Get In <span class="gradient-text">Touch</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Let's discuss your next project. Fill out the form below or connect with me through your preferred platform.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form (First Section) -->
+        <section class="py-16 bg-gradient-to-b from-slate-950 to-slate-900">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Contact Form -->
+                    <div class="glass rounded-3xl p-8 border border-purple-500/20 mb-16">
+                        <div class="text-center mb-10">
+                            <h2 class="text-4xl font-bold text-white mb-4">Send Me a Message</h2>
+                            <p class="text-gray-400 max-w-2xl mx-auto">
+                                Fill out the form below and I'll get back to you within 24 hours.
+                            </p>
+                        </div>
+
+                        <!-- Web3Forms Contact Form -->
+                        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                            <!-- Your Web3Forms Access Key -->
+                            <input type="hidden" name="access_key" value="48aa57fe-d873-466e-a8d8-a8ee306dd0ec">
+                            
+                            <!-- Form Configuration -->
+                            <input type="hidden" name="subject" value="New Message from Portfolio Contact Form">
+                            <input type="hidden" name="from_name" value="Portfolio Website">
+                            
+                            <!-- Honeypot Spam Protection -->
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block text-gray-300 mb-2 font-medium">Your Name *</label>
+                                    <input type="text" id="name" name="name" required
+                                           class="w-full px-4 py-3 bg-slate-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-purple-500 transition-colors"
+                                           placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-300 mb-2 font-medium">Your Email *</label>
+                                    <input type="email" id="email" name="email" required
+                                           class="w-full px-4 py-3 bg-slate-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-purple-500 transition-colors"
+                                           placeholder="john@example.com">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-gray-300 mb-2 font-medium">Your Message *</label>
+                                <textarea id="message" name="message" rows="6" required
+                                          class="w-full px-4 py-3 bg-slate-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-purple-500 transition-colors resize-none"
+                                          placeholder="Tell me about your project, timeline, and budget..."></textarea>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="text-sm text-gray-400">
+                                    <i class="fas fa-shield-alt mr-2 text-green-400"></i>
+                                    Your information is secure and will not be shared
+                                </div>
+                                <button type="submit" 
+                                        class="px-8 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-xl font-bold hover:scale-105 transition-transform relative overflow-hidden">
+                                    <span class="relative z-10">
+                                        <i class="fas fa-paper-plane mr-2"></i> Send Message
+                                    </span>
+                                    <div class="absolute inset-0 animate-shimmer"></div>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Form Status Messages -->
+                        <div id="form-success" class="mt-6 text-center hidden">
+                            <div class="inline-flex items-center px-4 py-3 rounded-xl glass border border-green-500/30">
+                                <i class="fas fa-check-circle text-green-400 mr-3 text-xl"></i>
+                                <span class="text-white">Message sent successfully! I'll get back to you soon.</span>
+                            </div>
+                        </div>
+                        
+                        <div id="form-error" class="mt-6 text-center hidden">
+                            <div class="inline-flex items-center px-4 py-3 rounded-xl glass border border-red-500/30">
+                                <i class="fas fa-exclamation-circle text-red-400 mr-3 text-xl"></i>
+                                <span class="text-white">Something went wrong. Please try again or use the direct links below.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternative Contact Methods (Below Form) -->
+                    <div class="text-center mb-12">
+                        <h3 class="text-3xl font-bold text-white mb-6">Prefer Direct Contact?</h3>
+                        <p class="text-gray-400 mb-10 max-w-2xl mx-auto">
+                            Connect with me directly through these platforms for faster response.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <!-- WhatsApp Card -->
+                            <div class="group glass rounded-2xl p-8 border border-green-500/20 hover:border-green-400/40 transition-all duration-300 hover-scale">
+                                <div class="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fab fa-whatsapp text-white text-2xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">WhatsApp</h4>
+                                <p class="text-gray-400 text-sm mb-6">For instant messaging and quick queries</p>
+                                <a href="https://wa.me/213697251047" target="_blank" class="inline-block px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+                                    <i class="fab fa-whatsapp mr-2"></i>Start Chat
+                                </a>
+                                <div class="mt-4 text-sm text-gray-400">
+                                    <i class="fas fa-clock mr-2"></i>Typically responds within minutes
+                                </div>
+                            </div>
+                            
+                            <!-- LinkedIn Card -->
+                            <div class="group glass rounded-2xl p-8 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 hover-scale">
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fab fa-linkedin-in text-white text-2xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">LinkedIn</h4>
+                                <p class="text-gray-400 text-sm mb-6">For professional networking and opportunities</p>
+                                <a href="https://www.linkedin.com/in/aymen-boutaraa-1a508334a" target="_blank" class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+                                    <i class="fab fa-linkedin-in mr-2"></i>Connect
+                                </a>
+                                <div class="mt-4 text-sm text-gray-400">
+                                    <i class="fas fa-briefcase mr-2"></i>View full professional profile
+                                </div>
+                            </div>
+                            
+                            <!-- Telegram Card -->
+                            <div class="group glass rounded-2xl p-8 border border-blue-400/20 hover:border-blue-300/40 transition-all duration-300 hover-scale">
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                    <i class="fab fa-telegram text-white text-2xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">Telegram</h4>
+                                <p class="text-gray-400 text-sm mb-6">For secure messaging and file sharing</p>
+                                <a href="https://t.me/aymen_boutaraa" target="_blank" class="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-semibold hover:scale-105 transition-transform">
+                                    <i class="fab fa-telegram mr-2"></i>Message
+                                </a>
+                                <div class="mt-4 text-sm text-gray-400">
+                                    <i class="fas fa-paperclip mr-2"></i>Send files up to 2GB
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Response Section -->
+        <section class="py-20 bg-gradient-to-b from-slate-900 to-slate-950">
+            <div class="container mx-auto px-6">
+                <div class="glass rounded-3xl p-12 border border-purple-500/20 text-center max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-white mb-8">Quick & Efficient Communication</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mb-6 mx-auto animate-pulse">
+                                <i class="fas fa-bolt text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-3">24-Hour Response</h3>
+                            <p class="text-gray-400 text-sm">Guaranteed response within one business day</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto animate-pulse" style="animation-delay: 0.2s;">
+                                <i class="fas fa-comments text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-3">Free Consultation</h3>
+                            <p class="text-gray-400 text-sm">Initial project discussion at no cost</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto animate-pulse" style="animation-delay: 0.4s;">
+                                <i class="fas fa-globe text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-3">Worldwide Availability</h3>
+                            <p class="text-gray-400 text-sm">Working with clients across all timezones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-t from-slate-950 to-slate-900 text-white relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <!-- Main Footer Content -->
+            <div class="py-16 border-b border-gray-800">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <!-- Brand Section -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center animate-pulse">
+                                <span class="text-white font-bold text-xl">A</span>
+                            </div>
+                            <div>
+                                <span class="text-2xl font-bold gradient-text">Aymen Boutaraa</span>
+                                <div class="text-sm text-gray-400">Full-Stack Developer</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed mb-8 max-w-md">
+                            Passionate about creating exceptional digital experiences that solve real-world problems. 
+                            From Algeria 🇩🇿, ready to help bring your vision to life.
+                        </p>
+                        
+                        <!-- Social Media -->
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/aymenbtr" class="w-12 h-12 glass rounded-xl flex items-center justify-center text-gray-400 hover:text-purple-400 hover:scale-105 transition-transform">
+                                <i class="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/aymen-boutaraa-1a508334a" target="_blank" class="w-12 h-12 glass rounded-xl flex items-center justify-center text-gray-400 hover:text-blue-400 hover:scale-105 transition-transform">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </a>
+                            <a href="https://wa.me/213697251047" target="_blank" class="w-12 h-12 glass rounded-xl flex items-center justify-center text-gray-400 hover:text-green-400 hover:scale-105 transition-transform">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                            </a>
+                            <a href="https://t.me/aymen_boutaraa" target="_blank" class="w-12 h-12 glass rounded-xl flex items-center justify-center text-gray-400 hover:text-blue-400 hover:scale-105 transition-transform">
+                                <i class="fab fa-telegram text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-6">Quick Links</h3>
+                        <div class="space-y-4">
+                            <a href="index.html" class="block text-gray-400 hover:text-purple-400 transition-colors duration-300 hover:translate-x-2 transform">
+                                <i class="fas fa-home mr-2"></i>Home
+                            </a>
+                            <a href="index.html#about" class="block text-gray-400 hover:text-purple-400 transition-colors duration-300 hover:translate-x-2 transform">
+                                <i class="fas fa-user mr-2"></i>About
+                            </a>
+                            <a href="index.html#skills" class="block text-gray-400 hover:text-purple-400 transition-colors duration-300 hover:translate-x-2 transform">
+                                <i class="fas fa-code mr-2"></i>Skills
+                            </a>
+                            <a href="MY_PROJECTS.html" class="block text-gray-400 hover:text-purple-400 transition-colors duration-300 hover:translate-x-2 transform">
+                                <i class="fas fa-briefcase mr-2"></i>Projects
+                            </a>
+                            <a href="contact.html" class="block text-gray-400 hover:text-purple-400 transition-colors duration-300 hover:translate-x-2 transform">
+                                <i class="fas fa-envelope mr-2"></i>Contact
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-6">Direct Contact</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center text-gray-400">
+                                <i class="fas fa-map-marker-alt mr-3 text-purple-400"></i>
+                                <span>Algeria Chlef</span>
+                            </div>
+                            <div class="flex items-center text-gray-400">
+                                <i class="fas fa-phone mr-3 text-purple-400"></i>
+                                <a href="https://wa.me/213697251047" target="_blank" class="hover:text-purple-400 transition-colors">
+                                    +213 697 251 047
+                                </a>
+                            </div>
+                            <div class="flex items-center text-gray-400">
+                                <i class="fab fa-telegram mr-3 text-purple-400"></i>
+                                <a href="https://t.me/aymen_boutaraa" target="_blank" class="hover:text-purple-400 transition-colors">
+                                    @aymen_boutaraa
+                                </a>
+                            </div>
+                            <div class="mt-6">
+                                <a href="#top" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:scale-105 transition-transform">
+                                    <i class="fas fa-arrow-up mr-2"></i>
+                                    Back to Top
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="text-gray-400 text-sm">
+                        © <span id="current-year"></span> Aymen Boutaraa. All rights reserved. Crafted with 
+                        <i class="fas fa-heart text-red-500 mx-1 animate-pulse"></i> 
+                        and <i class="fas fa-coffee text-yellow-500 mx-1"></i>
+                    </div>
+                    
+                    <div class="flex items-center space-x-6 text-sm text-gray-400">
+                        <a href="#" class="hover:text-purple-400 transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-purple-400 transition-colors">Terms of Service</a>
+                        <div class="flex items-center">
+                            <span class="mr-2">Made with</span>
+                            <div class="flex space-x-1">
+                                <i class="fab fa-html5 text-orange-500"></i>
+                                <i class="fab fa-css3-alt text-blue-500"></i>
+                                <i class="fab fa-js text-yellow-500"></i>
+                                <i class="fab fa-php text-purple-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll to Top Button -->
+        <button id="scroll-to-top" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-2xl hover:scale-105 transition-transform opacity-0 invisible transition-all duration-300 z-50">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </footer>
+</body>
+</html>
